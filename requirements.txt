@@ -1,0 +1,5 @@
+Flask
+opencv-python
+face_recognition
+numpy
+sqlite3
