@@ -1,0 +1,9 @@
+Flask
+deepface
+opencv-python
+Flask-Session
+Werkzeug
+Flask-SQLAlchemy
+pillow
+Flask-WTF
+Flask-Login
