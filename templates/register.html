@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <title>Register - facePay</title>
+   <meta name="keywords" content="register, face recognition, facePay">
+   <meta name="description" content="Register to facePay and secure your account using live facial recognition.">
+   <meta name="author" content="facePay Team">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+   <link rel="icon" href="{{ url_for('static', filename='images/fevicon.png') }}" type="image/gif">
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+</head>
+<body class="main-layout inner_page">
+   <!-- Loader -->
+   <div class="loader_bg">
+      <div class="loader">
+         <img src="{{ url_for('static', filename='images/loading.gif') }}" alt="Loading..."/>
+      </div>
+   </div>
+   
+   <!-- Header -->
+   <div class="header">
+      <div class="container">
+         <div class="row d_flex">
+            <div class="col-md-2 col-sm-3 col logo_section">
+               <div class="full">
+                  <div class="center-desk">
+                     <div class="logo">
+                        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="facePay Logo"/></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+               <nav class="navigation navbar navbar-expand-md navbar-dark">
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarsExample04">
+                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a></li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+            <div class="col-md-2 d_none">
+               <ul class="email text_align_right">
+                  <li><a href="Javascript:void(0)">Sign In</a></li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- end header -->
+
+   <!-- Register Section -->
+   <div class="register">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage text_align_center">
+                  <h2>Register for <span class="blue_light">facePay</span></h2>
+                  <p>Join facePay and secure your transactions using live facial recognition. Please fill out the form, then click "Capture & Confirm" to capture your face.</p>
+               </div>
+            </div>
+            <div class="col-md-10 offset-md-1">
+               <form id="register-form" class="main_form" method="POST" action="{{ url_for('register') }}">
+                  <div class="row">
+                     <!-- Username -->
+                     <div class="col-md-12">
+                        <input class="contactus" type="text" name="username" placeholder="Username" required>
+                     </div>
+                     <!-- UPI ID -->
+                     <div class="col-md-12">
+                        <input class="contactus" type="text" name="upi_id" placeholder="Your UPI ID" required>
+                     </div>
+                     <!-- Password -->
+                     <div class="col-md-12">
+                        <input class="contactus" type="password" name="password" placeholder="Password" required>
+                     </div>
+                     <!-- Live Video Feed Card -->
+                     <div class="col-md-12" style="margin-top: 20px;">
+                        <div class="card">
+                           <div class="card-header text-center">
+                              Live Camera Feed
+                           </div>
+                           <div class="card-body">
+                              <video id="video" width="100%" autoplay muted style="border: 1px solid #ccc; border-radius: 5px;"></video>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Capture & Confirm Button -->
+                     <div class="col-md-12" style="margin-top: 20px; text-align: center;">
+                        <button type="button" class="btn btn-success" onclick="captureAndConfirm()">Capture & Confirm</button>
+                     </div>
+                     <!-- Card to Display Captured Image -->
+                     <div class="col-md-12" style="margin-top: 20px;">
+                        <div class="card">
+                           <div class="card-header text-center">
+                              Captured Image
+                           </div>
+                           <div class="card-body">
+                              <img id="capturedImage" src="" alt="Captured Face" style="max-width: 100%; display: none; border: 1px solid #ccc; border-radius: 5px;">
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Hidden Input to store captured image data -->
+                     <input type="hidden" id="captured_image" name="captured_image">
+                     <!-- Submit Button -->
+                     <div class="col-md-12" style="margin-top: 20px;">
+                        <button class="send_btn" type="submit">Register Now</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- end register -->
+
+   <!-- Footer Section -->
+   <footer>
+      <div class="footer">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="infoma text_align_left">
+                     <h3>About facePay</h3>
+                     <ul class="commodo">
+                        <li>Seamless payments</li>
+                        <li>Instant recognition</li>
+                        <li>Secure transactions</li>
+                        <li>24/7 Support</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-6">
+                  <div class="infoma">
+                     <h3>Get Support</h3>
+                     <ul class="conta">
+                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address: 123, Tech Avenue, Silicon Valley</li>
+                        <li><i class="fa fa-phone" aria-hidden="true"></i> Call: +01 1234567890</li>
+                        <li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:support@facepay.com">support@facepay.com</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="infoma">
+                     <h3>Quick Links</h3>
+                     <ul class="menu_footer">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-2 col-md-6 col-sm-6">
+                  <div class="infoma text_align_left">
+                     <h3>Stay Connected</h3>
+                     <ul class="commodo">
+                        <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="copyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <p>© 2025 facePay. All Rights Reserved. | Designed by <a href="https://yourwebsite.com">Your Name</a></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+   <!-- end footer -->
+
+   <!-- Javascript files -->
+   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+   <script>
+      // Setup live video feed for registration
+      const video = document.getElementById('video');
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+         navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+               video.srcObject = stream;
+               video.play();
+            })
+            .catch(function(err) {
+               console.error("Error accessing camera: " + err);
+            });
+      }
+      
+      // Combined Capture & Confirm Function
+      function captureAndConfirm() {
+         const canvas = document.createElement('canvas');
+         canvas.width = video.videoWidth;
+         canvas.height = video.videoHeight;
+         const context = canvas.getContext('2d');
+         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+         // Compress to JPEG at 50% quality
+         const dataURL = canvas.toDataURL('image/jpeg', 0.5);
+         // Display the captured image in the preview
+         const capturedImage = document.getElementById('capturedImage');
+         capturedImage.src = dataURL;
+         capturedImage.style.display = 'block';
+         // Store the dataURL in the hidden input for form submission
+         document.getElementById('captured_image').value = dataURL;
+         alert("Face captured and confirmed. You can now register.");
+      }
+   </script>
+</body>
+</html>

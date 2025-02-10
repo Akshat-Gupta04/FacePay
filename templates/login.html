@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>Login - facePay</title>
+   <meta name="keywords" content="login, face recognition, facePay, secure login">
+   <meta name="description" content="Log in securely to facePay using live facial recognition.">
+   <meta name="author" content="facePay Team">
+   <!-- bootstrap css -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+   <!-- style css -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+   <!-- Responsive-->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+   <!-- fevicon -->
+   <link rel="icon" href="{{ url_for('static', filename='images/fevicon.png') }}" type="image/gif" />
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+</head>
+<body class="main-layout inner_page">
+   <!-- Loader -->
+   <div class="loader_bg">
+      <div class="loader"><img src="{{ url_for('static', filename='images/loading.gif') }}" alt="Loading..."/></div>
+   </div>
+   <!-- end loader -->
+   
+   <!-- Header -->
+   <div class="header">
+      <div class="container">
+         <div class="row d_flex">
+            <div class="col-md-2 col-sm-3 col logo_section">
+               <div class="full">
+                  <div class="center-desk">
+                     <div class="logo">
+                        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="facePay Logo"/></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+               <nav class="navigation navbar navbar-expand-md navbar-dark">
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a></li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+            <div class="col-md-2 d_none">
+               <ul class="email text_align_right">
+                  {% if session.get('username') %}
+                     <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+                  {% else %}
+                     <li><a href="{{ url_for('login') }}">Sign In</a></li>
+                  {% endif %}
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- end header -->
+
+   <!-- Login Section -->
+   <div class="login">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage text_align_center">
+                  <h2>Login to facePay</h2>
+                  <p>Log in using your credentials or scan your face for secure access.</p>
+               </div>
+            </div>
+            <div class="col-md-10 offset-md-1">
+               <form id="login-form" class="main_form" method="POST" action="{{ url_for('login') }}">
+                  <div class="row">
+                     <!-- Live Video Feed Card for Face Scan -->
+                     <div class="col-md-12">
+                        <div class="card" style="margin-bottom: 20px;">
+                           <div class="card-header text-center">
+                              Live Camera Feed
+                           </div>
+                           <div class="card-body">
+                              <video id="login-video" width="100%" autoplay muted style="border: 1px solid #ccc; border-radius: 5px; max-height:300px;"></video>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Face Scan Button -->
+                     <div class="col-md-12 text-center">
+                        <button type="button" class="btn btn-primary" onclick="startLoginFaceScan()">Scan Your Face</button>
+                        <p class="help-text">Ensure your face is clearly visible.</p>
+                     </div>
+                     <!-- Username and Password Fields -->
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label for="username">Username</label>
+                           <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                           <label for="password">Password</label>
+                           <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                     </div>
+                     <!-- Submit Button -->
+                     <div class="col-md-12" style="margin-top: 20px; text-align: center;">
+                        <button class="btn btn-success" type="submit">Login</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- end login -->
+
+   <!-- Footer Section -->
+   <footer>
+      <div class="footer">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="infoma text_align_left">
+                     <h3>About facePay</h3>
+                     <ul class="commodo">
+                        <li>Seamless payments</li>
+                        <li>Instant recognition</li>
+                        <li>Secure transactions</li>
+                        <li>24/7 Support</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-6">
+                  <div class="infoma">
+                     <h3>Get Support</h3>
+                     <ul class="conta">
+                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address: 123, Tech Avenue, Silicon Valley</li>
+                        <li><i class="fa fa-phone" aria-hidden="true"></i> Call: +01 1234567890</li>
+                        <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:support@facepay.com">support@facepay.com</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="infoma">
+                     <h3>Quick Links</h3>
+                     <ul class="menu_footer">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-2 col-md-6 col-sm-6">
+                  <div class="infoma text_align_left">
+                     <h3>Stay Connected</h3>
+                     <ul class="commodo">
+                        <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="copyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <p>© 2025 facePay. All Rights Reserved. | Designed by <a href="https://yourwebsite.com">Your Name</a></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+   <!-- end footer -->
+
+   <!-- Javascript files -->
+   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+   <script>
+      // Setup live video feed for login
+      const loginVideo = document.getElementById('login-video');
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+         navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+               loginVideo.srcObject = stream;
+               loginVideo.play();
+            })
+            .catch(function(err) {
+               console.error("Error accessing camera: " + err);
+            });
+      }
+
+      // Use AJAX to send captured image for face recognition
+      function startLoginFaceScan() {
+         // Create a canvas to capture the current frame from the video feed
+         const canvas = document.createElement('canvas');
+         canvas.width = loginVideo.videoWidth;
+         canvas.height = loginVideo.videoHeight;
+         const context = canvas.getContext('2d');
+         context.drawImage(loginVideo, 0, 0, canvas.width, canvas.height);
+         // Compress to JPEG at 50% quality
+         const dataURL = canvas.toDataURL('image/jpeg', 0.5);
+         
+         // Send the captured image via AJAX to /login_scan
+         $.ajax({
+            type: 'POST',
+            url: "{{ url_for('login_scan') }}",
+            data: { captured_image: dataURL },
+            success: function(response) {
+               if (response.status === 'success') {
+                  // Populate the username field with the recognized username
+                  $('#username').val(response.username);
+                  alert("Face recognized as " + response.username);
+               } else {
+                  alert(response.message);
+               }
+            },
+            error: function(xhr, status, error) {
+               console.error("Error in face scan: ", error);
+               alert("Error in face scan. Please try again.");
+            }
+         });
+      }
+   </script>
+</body>
+</html>

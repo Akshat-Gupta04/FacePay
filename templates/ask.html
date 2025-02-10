@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Request Money - facePay</title>
+    <meta name="keywords" content="money request, facepay, facial recognition, ask for money">
+    <meta name="description" content="Request money securely using facePay. Scan your face to initiate money request and receive payment instantly.">
+    <meta name="author" content="facePay Team">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="static/css/responsive.css">
+    <!-- Favicon -->
+    <link rel="icon" href="static/images/favicon.png" type="image/gif">
+</head>
+<body class="main-layout inner_page">
+    <!-- Loader -->
+    <div class="loader_bg">
+        <div class="loader"><img src="static/images/loading.gif" alt="Loading..."/></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="row d_flex">
+                <div class="col-md-2 col-sm-3 col logo_section">
+                    <div class="full">
+                        <div class="center-desk">
+                            <div class="logo">
+                                <a href="index.html"><img src="static/images/logo.png" alt="facePay Logo"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12">
+                    <nav class="navigation navbar navbar-expand-md navbar-dark">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+                                <li class="nav-item active"><a class="nav-link" href="ask.html">Ask</a></li>
+                                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-2 d_none">
+                    <ul class="email text_align_right">
+                        <li><a href="Javascript:void(0)">Sign In</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ask Section -->
+    <div class="ask">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage text_align_center">
+                        <h2>Request Money</h2>
+                        <p>Need money? You can request it instantly using facePay. Scan your face to make a request and wait for the payment to be processed via UPI.</p>
+                    </div>
+                </div>
+                <div class="col-md-10 offset-md-1">
+                    <!-- Request Form -->
+                    <form id="request-form" class="main_form" method="POST" action="/ask">
+                        <div class="row">
+                            <!-- Face Scan Trigger -->
+                            <div class="col-md-12">
+                                <div class="face-scan">
+                                    <button type="button" class="btn btn-primary" onclick="startFaceScan()">Scan Your Face</button>
+                                    <p class="help-text">Ensure your face is clearly visible for better recognition.</p>
+                                </div>
+                            </div>
+
+                            <!-- Display Scanned UPI ID -->
+                            <div class="col-md-12">
+                                <div id="upi-id-display" class="upi-id-display" style="display:none;">
+                                    <label for="upi-id">UPI ID</label>
+                                    <input type="text" id="upi-id" class="form-control" name="upi-id" placeholder="UPI ID" readonly>
+                                </div>
+                            </div>
+
+                            <!-- Request Amount -->
+                            <div class="col-md-12">
+                                <label for="amount">Amount to Request</label>
+                                <input type="number" class="form-control" name="amount" id="amount" placeholder="Enter Amount" required>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-md-12">
+                                <button class="btn btn-success" type="submit">Request Money</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma text_align_left">
+                            <h3>About facePay</h3>
+                            <p>FacePay is a seamless money request and payment platform powered by facial recognition, allowing instant and secure requests for money.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma">
+                            <h3>Get Support</h3>
+                            <ul class="conta">
+                                <li><i class="fa fa-map-marker" aria-hidden="true"></i>Address: 123, Tech Avenue, Silicon Valley</li>
+                                <li><i class="fa fa-phone" aria-hidden="true"></i>Call: +01 1234567890</li>
+                                <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:support@facepay.com"> Email: support@facepay.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma">
+                            <h3>Quick Links</h3>
+                            <ul class="menu_footer">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma text_align_left">
+                            <h3>Stay Connected</h3>
+                            <ul class="commodo">
+                                <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>© 2025 facePay. All Rights Reserved. | Designed by <a href="https://yourwebsite.com">Your Name</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/custom.js"></script>
+
+    <script>
+        function startFaceScan() {
+            // Simulate face scan for demo purposes
+            alert("Face scan started. Please align your face with the camera.");
+            
+            // This is where you would integrate your face recognition logic
+            // For now, we're just showing a mock UPI ID
+            setTimeout(function() {
+                document.getElementById('upi-id-display').style.display = 'block';
+                document.getElementById('upi-id').value = 'user@upi';
+            }, 2000);  // Simulate face recognition delay
+        }
+    </script>
+</body>
+</html>

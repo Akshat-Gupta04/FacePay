@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Meta Tags -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Mobile Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- Site Meta -->
+  <title>facePay</title>
+  <meta name="keywords" content="face, pay, facial recognition, UPI, secure payment">
+  <meta name="description" content="facePay enables secure payments and money requests using live facial recognition technology.">
+  <meta name="author" content="facePay Team">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Custom Style CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+  <!-- Favicon -->
+  <link rel="icon" href="{{ url_for('static', filename='images/fevicon.png') }}" type="image/gif">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Custom Modal Styles -->
+  <style>
+    /* Semi-transparent backdrop */
+    .modal-backdrop {
+      background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    /* Make modal bigger */
+    .modal-dialog.modal-lg {
+      max-width: 700px;
+    }
+    /* Custom modal content with a transparent card effect */
+    .custom-modal-content {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Header with an external background image and overlay */
+    .custom-modal-header {
+      position: relative;
+      padding: 0;
+      border: none;
+    }
+    .custom-modal-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://source.unsplash.com/1600x900/?payment,technology');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.65);
+      z-index: 1;
+    }
+    .custom-modal-header .modal-title {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+      color: #f20a0a;
+      font-size: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+    .custom-modal-header .close {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      opacity: 1;
+      font-size: 1.8rem;
+      margin: 15px;
+    }
+    /* Modal body styling with bigger font */
+    .custom-modal-body {
+      padding: 30px;
+      text-align: center;
+      font-size: 2rem;
+      color: #2e3192;
+      font-weight: 600;
+    }
+    /* Additional image area in modal body */
+    .custom-modal-image {
+      margin-top: 20px;
+    }
+    .custom-modal-image img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body class="main-layout">
+  <!-- Loader -->
+  <div class="loader_bg">
+    <div class="loader">
+      <img src="{{ url_for('static', filename='images/loading.gif') }}" alt="Loading..." />
+    </div>
+  </div>
+  <!-- End Loader -->
+
+  <!-- Header / Navbar -->
+  <div class="header">
+    <div class="container">
+      <div class="row d_flex">
+        <!-- Logo Section -->
+        <div class="col-md-2 col-sm-3 col logo_section">
+          <div class="full">
+            <div class="center-desk">
+              <div class="logo">
+                <a href="{{ url_for('index') }}">
+                  <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="facePay Logo" style="width:150px; height:auto;">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Navigation Section -->
+        <div class="col-md-8 col-sm-12">
+          <nav class="navigation navbar navbar-expand-md navbar-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html">About</a>
+                </li>
+                {% if session.get('username') %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('pay') }}">Pay</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('ask') }}">Ask</a>
+                  </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                  </li>
+                {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <!-- Right-side Links -->
+        <div class="col-md-2 d_none">
+          <ul class="email text_align_right">
+            {% if session.get('username') %}
+              <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+            {% else %}
+              <li><a href="{{ url_for('login') }}">Sign In</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Header / Navbar -->
+
+  <!-- Attractive Pop-Up Modal -->
+  <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content custom-modal-content">
+        <div class="modal-header custom-modal-header">
+          <h5 class="modal-title" id="paymentModalLabel">FacePay Says</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body custom-modal-body">
+            Face the Future, Pay Without the QR!
+          <div class="custom-modal-image">
+            <img src="static/images/No-QR.png" alt="No QR Payment">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Pop-Up Modal -->
+
+  <!-- Banner/Slider Section -->
+  <div class="full_bg">
+    <div class="slider_main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Carousel with auto-sliding enabled -->
+            <div id="banner1" class="carousel slide" data-ride="carousel" data-interval="5000" data-pause="false">
+              <ol class="carousel-indicators">
+                <li data-target="#banner1" data-slide-to="0" class="active"></li>
+                <li data-target="#banner1" data-slide-to="1"></li>
+                <li data-target="#banner1" data-slide-to="2"></li>
+              </ol>
+              <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                  <div class="carousel-caption relative">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="dream">
+                          <h1>
+                            facePay<br>
+                            Secure Payments<br>
+                            with Facial Recognition
+                          </h1>
+                          {% if session.get('username') %}
+                            <a class="read_more" href="#dashboard">Get Started</a>
+                          {% else %}
+                            <a class="read_more" href="{{ url_for('register') }}">Get Started</a>
+                          {% endif %}
+                          <a class="read_more" href="{{ url_for('contact') }}">Contact Us</a>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="dream_img">
+                          <figure>
+                            <img src="{{ url_for('static', filename='images/dream_img.png') }}" alt="FacePay Demo" />
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                  <div class="carousel-caption relative">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="dream">
+                          <h1>
+                            Live Face Recognition<br>
+                            For Secure Transactions
+                          </h1>
+                          <a class="read_more" href="{{ url_for('login') }}">Login Now</a>
+                          <a class="read_more" href="{{ url_for('register') }}">Register</a>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="dream_img">
+                          <figure>
+                            <img src="{{ url_for('static', filename='images/dream_img.png') }}" alt="Live Face Scan" />
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                  <div class="carousel-caption relative">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="dream">
+                          <h1>
+                            Pay or Request Money<br>
+                            Instantly via UPI<br>
+                            Using Your Face
+                          </h1>
+                          <a class="read_more" href="{{ url_for('pay') }}">Pay Now</a>
+                          <a class="read_more" href="{{ url_for('ask') }}">Request Money</a>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="dream_img">
+                          <figure>
+                            <img src="{{ url_for('static', filename='images/dream_img.png') }}" alt="Transaction Demo" />
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Carousel Controls -->
+              <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#banner1" role="button" data-slide="next">
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Banner/Slider Section -->
+
+  <!-- Dashboard Section (Visible only when logged in) -->
+  {% if session.get('username') %}
+  <section id="dashboard" class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h2>Welcome, {{ session['username'] }}!</h2>
+          <p class="lead">This is your dashboard. From here you can view your transaction history, make new payments, or request money.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- About Section -->
+  <section class="about py-5 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h2>About facePay</h2>
+          <p class="lead">facePay leverages cutting-edge facial recognition technology to facilitate secure, instant payments and money requests. No more scanning QR codes or handling cash—your face is your key to hassle-free transactions.</p>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <img src="{{ url_for('static', filename='images/about.png') }}" class="img-fluid rounded" alt="About facePay">
+        </div>
+        <div class="col-md-6">
+          <h3>Secure & Fast</h3>
+          <p>Our advanced AI-driven facial recognition ensures every transaction is secure and processed quickly.</p>
+          <h3>User-Friendly Interface</h3>
+          <p>A modern, dynamic design provides a smooth experience on all devices, making it easy to pay or request money.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features py-5">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <i class="fa fa-lock fa-3x text-primary mb-3"></i>
+          <h4>Secure Transactions</h4>
+          <p>Our AI-powered facial recognition ensures every transaction is authenticated and secure.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <i class="fa fa-bolt fa-3x text-primary mb-3"></i>
+          <h4>Instant Processing</h4>
+          <p>Experience fast and seamless payments without the delays of traditional methods.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <i class="fa fa-mobile fa-3x text-primary mb-3"></i>
+          <h4>User-Friendly</h4>
+          <p>An intuitive interface designed to provide a smooth experience across all devices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works py-5 bg-light">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h2>How It Works</h2>
+          <p class="lead">A simple three-step process for secure payments and money requests.</p>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-4 text-center">
+          <div class="step">
+            <i class="fa fa-user-plus fa-3x text-primary mb-3"></i>
+            <h4>Register</h4>
+            <p>Create your account by registering your details and capturing your face.</p>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="step">
+            <i class="fa fa-camera fa-3x text-primary mb-3"></i>
+            <h4>Scan</h4>
+            <p>Use live facial recognition to verify your identity or that of the transaction target.</p>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="step">
+            <i class="fa fa-money fa-3x text-primary mb-3"></i>
+            <h4>Transact</h4>
+            <p>Make payments or request money instantly with secure UPI integration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="cta py-5 text-center text-white" style="background: #2e3192;">
+    <div class="container">
+      <h2>Ready to experience secure payments?</h2>
+      <p class="lead">Join facePay today and transform the way you transact!</p>
+      {% if not session.get('username') %}
+        <a class="btn btn-lg btn-outline-light" href="{{ url_for('register') }}">Register Now</a>
+      {% else %}
+        <a class="btn btn-lg btn-outline-light" href="{{ url_for('pay') }}">Make a Payment</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="infoma text_align_left">
+              <h3>About facePay</h3>
+              <ul class="commodo">
+                <li>Seamless payments</li>
+                <li>Instant recognition</li>
+                <li>Secure transactions</li>
+                <li>24/7 Support</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="infoma">
+              <h3>Get Support</h3>
+              <ul class="conta">
+                <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address: 123, Tech Avenue, Silicon Valley</li>
+                <li><i class="fa fa-phone" aria-hidden="true"></i> Call: +01 1234567890</li>
+                <li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:support@facepay.com">support@facepay.com</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="infoma">
+              <h3>Quick Links</h3>
+              <ul class="menu_footer">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 col-sm-6">
+            <div class="infoma text_align_left">
+              <h3>Stay Connected</h3>
+              <ul class="commodo">
+                <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <p>© 2025 facePay. All Rights Reserved. | Designed by <a href="https://yourwebsite.com">Your Name</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer Section -->
+
+  <!-- Javascript Files -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  <script>
+    // Automatically show the payment notice modal on page load
+    $(document).ready(function(){
+      $("#paymentModal").modal("show");
+    });
+  </script>
+</body>
+</html>

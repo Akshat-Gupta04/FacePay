@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact Us - facePay</title>
+    <meta name="keywords" content="contact, support, facepay, help">
+    <meta name="description" content="Get in touch with us for any inquiries or assistance with the facePay app.">
+    <meta name="author" content="facePay Team">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="static/css/responsive.css">
+    <!-- Favicon -->
+    <link rel="icon" href="static/images/favicon.png" type="image/gif">
+
+</head>
+<body class="main-layout inner_page">
+    <!-- Loader (show on page load) -->
+    <div class="loader_bg">
+        <div class="loader"><img src="static/images/loading.gif" alt="Loading..."/></div>
+    </div>
+
+    <!-- Header Section -->
+     <!-- Header / Navbar -->
+  <div class="header">
+    <div class="container">
+      <div class="row d_flex">
+        <!-- Logo Section -->
+        <div class="col-md-2 col-sm-3 col logo_section">
+          <div class="full">
+            <div class="center-desk">
+              <div class="logo">
+                <a href="{{ url_for('index') }}">
+                  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="facePay Logo" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Navigation Section -->
+        <div class="col-md-8 col-sm-12">
+          <nav class="navigation navbar navbar-expand-md navbar-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html">About</a>
+                </li>
+                {% if session.get('username') %}
+                  <!-- When logged in, show additional options -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('pay') }}">Pay</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('ask') }}">Ask</a>
+                  </li>
+                {% else %}
+                  <!-- When not logged in, show Login and Register options -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                  </li>
+                {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <!-- Right-side Links -->
+        <div class="col-md-2 d_none">
+          <ul class="email text_align_right">
+            {% if session.get('username') %}
+              <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+            {% else %}
+              <li><a href="{{ url_for('login') }}">Sign In</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+    </header>
+
+    <!-- Contact Form Section -->
+    <div class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage text_align_center">
+                        <h2>Contact <span class="blue_light">Us</span></h2>
+                        <p>If you have any questions, need help, or want to know more about facePay, feel free to contact us.</p>
+                    </div>
+                </div>
+                <div class="col-md-10 offset-md-1">
+                    <form id="contact-form" class="main_form" method="POST" action="/submit_contact">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Name" type="text" name="name" required>
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Phone Number" type="tel" name="phone" required>
+                            </div>
+                            <div class="col-md-12">
+                                <input class="contactus" placeholder="Your Email" type="email" name="email" required>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" placeholder="Message" name="message" required></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="send_btn">Submit Now</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma text_align_left">
+                            <h3>About facePay</h3>
+                            <p>FacePay is a seamless payment solution powered by facial recognition, enabling secure and instant payments via your face.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma">
+                            <h3>Get Support</h3>
+                            <ul class="conta">
+                                <li><i class="fa fa-map-marker" aria-hidden="true"></i>Address: 123, Tech Avenue, Silicon Valley</li>
+                                <li><i class="fa fa-phone" aria-hidden="true"></i>Call: +01 1234567890</li>
+                                <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:support@facepay.com"> Email: support@facepay.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma">
+                            <h3>Quick Links</h3>
+                            <ul class="menu_footer">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="infoma text_align_left">
+                            <h3>Stay Connected</h3>
+                            <ul class="commodo">
+                                <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>© 2025 facePay. All Rights Reserved. | Designed by <a href="https://yourwebsite.com">Your Name</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/custom.js"></script>
+</body>
+</html>

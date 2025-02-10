@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- Basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <title>Pay - facePay</title>
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+   <!-- Style CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+   <!-- Responsive CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+   <!-- Favicon -->
+   <link rel="icon" href="{{ url_for('static', filename='images/fevicon.png') }}" type="image/gif">
+</head>
+<body class="main-layout inner_page">
+   <!-- Header Section -->
+   <div class="header">
+      <div class="container">
+         <div class="row d_flex">
+            <div class="col-md-2 col-sm-3 col logo_section">
+               <div class="full">
+                  <div class="center-desk">
+                     <div class="logo">
+                        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="facePay Logo" /></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+               <nav class="navigation navbar navbar-expand-md navbar-dark">
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                     <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('pay') }}">Pay</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ask') }}">Ask</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+            <div class="col-md-2 d_none">
+               <ul class="email text_align_right">
+                  <li><a href="javascript:void(0)"><i class="fa fa-shopping-bag" aria-hidden="true"><span>0</span></i></a></li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- End Header Section -->
+
+   <!-- Main Section -->
+   <div class="container">
+      <h2 class="text-center">Scan Target's Face for Payment</h2>
+      <form method="POST" action="{{ url_for('pay') }}">
+         <div class="row">
+            <!-- Video Feed for Live Capture -->
+            <div class="col-md-12">
+               <div class="video-card" style="border: 1px solid #ccc; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
+                  <video id="video" width="100%" autoplay muted style="max-height: 300px;"></video>
+               </div>
+            </div>
+            
+            <!-- Capture & Confirm Button -->
+            <div class="col-md-12 text-center" style="margin-top:20px;">
+               <button type="button" class="btn btn-success" onclick="captureAndConfirm()">Capture & Confirm</button>
+            </div>
+            
+            <!-- Display Captured Face Image -->
+            <div class="col-md-12" style="margin-top:20px;">
+               <img id="capturedImage" src="" alt="Captured Face" style="max-width:100%; display:none; border:1px solid #ccc; border-radius:5px;">
+            </div>
+            
+            <!-- Hidden Input for Captured Image -->
+            <input type="hidden" id="captured_image" name="captured_image">
+            
+            <!-- Submit Button to Proceed -->
+            <div class="col-md-12 text-center" style="margin-top:20px;">
+               <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+            </div>
+         </div>
+      </form>
+   </div>
+   <!-- End Main Section -->
+
+   <!-- Footer Section -->
+   <footer>
+      <div class="footer">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="infoma text_align_left">
+                     <h3>About facePay</h3>
+                     <ul class="commodo">
+                        <li>Seamless payments</li>
+                        <li>Instant recognition</li>
+                        <li>Secure transactions</li>
+                        <li>24/7 Support</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-6">
+                  <div class="infoma">
+                     <h3>Get Support</h3>
+                     <ul class="conta">
+                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> Address: 123, Tech Avenue, Silicon Valley</li>
+                        <li><i class="fa fa-phone" aria-hidden="true"></i> Call: +01 1234567890</li>
+                        <li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:support@facepay.com">support@facepay.com</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="infoma">
+                     <h3>Quick Links</h3>
+                     <ul class="menu_footer">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-lg-2 col-md-6 col-sm-6">
+                  <div class="infoma text_align_left">
+                     <h3>Stay Connected</h3>
+                     <ul class="commodo">
+                        <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i> LinkedIn</a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="copyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <p>© 2025 facePay. All Rights Reserved. | Designed by <a href="https://yourwebsite.com">Your Name</a></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+   <!-- End Footer Section -->
+
+   <!-- Javascript files -->
+   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+   <script>
+      // Setup live video feed for pay scan
+      const video = document.getElementById('video');
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+         navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+               video.srcObject = stream;
+               video.play();
+            })
+            .catch(function(err) {
+               console.error("Error accessing camera: " + err);
+            });
+      }
+      
+      function captureAndConfirm() {
+         const canvas = document.createElement('canvas');
+         canvas.width = video.videoWidth;
+         canvas.height = video.videoHeight;
+         const context = canvas.getContext('2d');
+         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+         // Compress image as JPEG at 50% quality
+         const dataURL = canvas.toDataURL('image/jpeg', 0.5);
+         document.getElementById('capturedImage').src = dataURL;
+         document.getElementById('capturedImage').style.display = 'block';
+         document.getElementById('captured_image').value = dataURL;
+         alert("Target face captured and confirmed.");
+      }
+   </script>
+</body>
+</html>
